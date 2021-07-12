@@ -8,11 +8,12 @@ const Body = () => {
 
     const dispatch = useDispatch();
     const notes = useSelector(getAllNotes);
+    // console.log(notes)
     const notesStatus = useSelector((state) => state.notes.status);
     const error = useSelector((state) => state.notes.error);
     useEffect(() => {
         if (notesStatus === 'idle') {
-            dispatch(fetchNotes());
+            dispatch(fetchNotes(""));
         }
     }, [notesStatus, dispatch]);
     let content;
@@ -21,10 +22,10 @@ const Body = () => {
     } else if (notesStatus === 'succeeded') {
         content = (
             <Row>
-                {notes.map(note => {
+                {notes.data.map(note => {
                     return (
-                        <Col xs={12} md={4} key={note.id}>
-                            <Card bg="dark" text="white" border="light" className="p-3" key="">
+                        <Col xs={12} md={4} key={note.id} className="my-2">
+                            <Card bg="dark" text="white" border="light" className="p-3  h-100" key="">
                                 <Card.Body className="mx-0 px-0">
                                     <Card.Title>{note.title}</Card.Title>
                                     <Card.Text>
@@ -33,13 +34,6 @@ const Body = () => {
                                 </Card.Body>
                             </Card>
                         </Col>
-                        // <ListItem key={note._id}>
-                        //     <h4>
-                        //         <Link to={`/edit/${note._id}`}>{note.title}</Link>
-                        //     </h4>
-                        //     <p>{note.note.slice(0, 101)}</p>
-                        //     <Separator />
-                        // </ListItem>
                     );
                 })}
             </Row>
@@ -47,7 +41,6 @@ const Body = () => {
     } else if (notesStatus === 'failed') {
         content = <div>{error}</div>;
     }
-
 
     return (
         <Container>

@@ -6,10 +6,12 @@ const initialState = {
     status: 'idle',
     error: null
 };
-export const fetchNotes = createAsyncThunk('notes/fetchNotes', async () => {
-    const response = await axios.get(`https://jsonplaceholder.typicode.com/posts`);
-    const data = await response.json();
-    return data;
+export const fetchNotes = createAsyncThunk('notes/fetchNotes', async (title) => {
+    console.log(title)
+    const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?q=${title}`);
+    // const data = await response.json();
+    console.log(response);
+    return response.data;
 });
 const notesSlice = createSlice({
     name: 'notes',
@@ -22,6 +24,7 @@ const notesSlice = createSlice({
         [fetchNotes.fulfilled]: (state, action) => {
             state.status = 'succeeded';
             state.data = action.payload;
+            console.log(action)
         },
         [fetchNotes.rejected]: (state, action) => {
             state.status = 'failed';
