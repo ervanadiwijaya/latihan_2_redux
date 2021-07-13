@@ -24,8 +24,8 @@ const Body = () => {
             <Row>
                 {notes.data.map(note => {
                     return (
-                        <Col xs={12} md={4} key={note.id} className="my-2">
-                            <Card bg="dark" text="white" border="light" className="p-3  h-100" key="">
+                        <Col xs={12} md={6} key={note.id} className="my-2">
+                            <Card bg="light" text="dark" border="light" className="px-3  h-100" key="">
                                 <Card.Body className="mx-0 px-0">
                                     <Card.Title>{note.title}</Card.Title>
                                     <Card.Text>
@@ -46,8 +46,10 @@ const Body = () => {
         <Container>
             <Row>
                 <Col className="text-center my-2">
+                    <h2>Artikel</h2>
                     <p className="mb-0 pb-0"><i>Baca yang ingin kamu baca, Cari yang ingin kamu cari</i></p>
-                    <small className="mt-0 pt-0"><i>- Ervan Adi Wijaya</i></small>
+                    <hr></hr>
+                    {/* <small className="mt-0 pt-0"><i>- Ervan Adi Wijaya</i></small> */}
                 </Col>
             </Row>
 

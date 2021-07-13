@@ -7,16 +7,18 @@ const initialState = {
     error: null
 };
 export const fetchNotes = createAsyncThunk('notes/fetchNotes', async (title) => {
-    console.log(title)
+    // console.log(title)
     const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?q=${title}`);
     // const data = await response.json();
-    console.log(response);
+    // console.log(response);
     return response.data;
 });
 const notesSlice = createSlice({
     name: 'notes',
     initialState,
-    reducers: {},
+    reducers: {
+
+    },
     extraReducers: {
         [fetchNotes.pending]: (state, action) => {
             state.status = 'loading';
@@ -35,6 +37,5 @@ const notesSlice = createSlice({
 
 export const getAllNotes = (state) => state.notes;
 
-export const { noteAdded } = notesSlice.actions;
 
 export default notesSlice.reducer;
