@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import { Row, Col, Card, Container } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Card, Container, Pagination } from "react-bootstrap";
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllNotes, fetchNotes } from '../features/noteSlice';
 
 
 const Body = () => {
-
     const dispatch = useDispatch();
     const notes = useSelector(getAllNotes);
     // console.log(notes)
@@ -16,16 +15,33 @@ const Body = () => {
             dispatch(fetchNotes(""));
         }
     }, [notesStatus, dispatch]);
+
+    const [page, setPage] = useState(1);
+    const dataPage = 10;
+    const currentData = (page - 1) * dataPage;
+    const pageCount = Math.ceil(notes.data.length / dataPage);
+
+
+    const items = []
+    for (let number = 1; number <= pageCount; number++) {
+        items.push(
+            <Pagination.Item key={number} active={number === page} onClick={() => setPage(number)} >
+                {number}
+            </Pagination.Item>,
+        );
+    }
+
+
     let content;
     if (notesStatus === 'loading') {
         content = <div>Loading...</div>;
     } else if (notesStatus === 'succeeded') {
         content = (
             <Row>
-                {notes.data.map(note => {
+                {notes.data.slice(currentData, currentData + dataPage).map(note => {
                     return (
                         <Col xs={12} md={6} key={note.id} className="my-2">
-                            <Card bg="light" text="dark" border="light" className="px-3  h-100" key="">
+                            <Card bg="light" text="dark" border="light" className="px-3 w-100  h-100" key="">
                                 <Card.Body className="mx-0 px-0">
                                     <Card.Title>{note.title}</Card.Title>
                                     <Card.Text>
@@ -43,7 +59,7 @@ const Body = () => {
     }
 
     return (
-        <Container>
+        <Container className="mt-3">
             <Row>
                 <Col className="text-center my-2">
                     <h2>Artikel</h2>
@@ -56,6 +72,10 @@ const Body = () => {
             <Row>
                 {content}
             </Row >
+
+
+            <Pagination size="sm justify-content-center">{items}</Pagination>
+
         </Container >
     )
 }
